@@ -78,7 +78,7 @@ class Teste:
 
 
 teste = Teste()
-objetos = teste.getObjectsFromFile('arquivo.txt')
+objetos = teste.getObjectsFromFile('milhao.txt')
 teste.insertObjecbyObject(objetos)
 teste.getQuantityOfValuesOnDB()
 teste.searchObjectsByCity('brasilia')
