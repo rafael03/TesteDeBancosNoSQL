@@ -18,16 +18,16 @@ class MongodbDAO:
 		pass
 
 	def getAllObjects(self):
-		tudo = self.recrutas_collections.find()
-		return tudo.count()
+		collections = self.recrutas_collections.find()
+		return collections, collections.count()
 
 	def getQuantityOfValuesOnDB(self):
 		quantidade = self.db['recrutas'].count()
 		return quantidade
 
 	def getByCivilStatus(self, civil_status):
-		cursor = self.db['recrutas'].find({"ESTADO_CIVIL": civil_status})
-		return cursor.count()
+		objects = self.db['recrutas'].find({"ESTADO_CIVIL": civil_status})
+		return objects, objects.count()
 
 	def updateCivilStatus(self, old_status, new_status):
 		collections = self.db['recrutas'].update_many(
@@ -35,11 +35,11 @@ class MongodbDAO:
 									    {"$set": {"ESTADO_CIVIL": new_status},
 									     "$currentDate": {"lastModified": True}})
 
-		return collections.modified_count
+		return collections, collections.modified_count
 
 	def deleteByCivilStatus(self, civil_status_to_delete):
 		collections = self.db['recrutas'].delete_many({"ESTADO_CIVIL": civil_status_to_delete})
-		return collections.deleted_count
+		return collections, collections.deleted_count
 
 	def deleteAllObjects(self):
 		self.db.drop_collection('recrutas')
