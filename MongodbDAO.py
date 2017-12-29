@@ -19,7 +19,7 @@ class MongodbDAO:
 
 	def getAllObjects(self):
 		tudo = self.recrutas_collections.find()
-		return tudo
+		return tudo.count()
 
 	def getQuantityOfValuesOnDB(self):
 		quantidade = self.db['recrutas'].count()

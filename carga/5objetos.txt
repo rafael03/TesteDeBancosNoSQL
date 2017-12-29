@@ -1,0 +1,5 @@
+1989,95,181,57,44,98,,"DESCALVADO","SP","BRASIL","Solteiro","M","Ensino Médio Completo",2007,"Sem dispensa","Urbana","PIRASSUNUNGA","SP","BRASIL","5/93 - PIRASSUNUNGA","PIRASSUNUNGA","SP"
+1989,64,173,57,41,76,,"CATANDUVA","SP","BRASIL","Casado","M","Ensino Superior Completo",2007,"Sem dispensa","Urbana","SAO PAULO","SP","BRASIL","4/94 - SAO PAULO (BUTANTA)","SAO PAULO","SP"
+1989,82,171,58,41,94,,"CATANDUVA","SP","BRASIL","Solteiro","M","Ensino Médio Completo",2007,"Sem dispensa","Urbana","CATANDUVA","SP","BRASIL","5/27 - CATANDUVA","CATANDUVA","SP"
+1989,,,,,,,"SANTO ANDRE","SP","BRASIL","Solteiro","M","Ensino Médio Completo",2007,"Sem dispensa","Urbana","PIRAJUI","SP","BRASIL","6/127 - PIRAJUI","PIRAJUI","SP"
+1989,,,,,,,"PIRAJUI","SP","BRASIL","Solteiro","M","3ª Série do Ensino Médio",2007,"Sem dispensa","Urbana","PIRAJUI","SP","BRASIL","6/127 - PIRAJUI","PIRAJUI","SP"

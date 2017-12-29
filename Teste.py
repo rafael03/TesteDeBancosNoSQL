@@ -48,23 +48,23 @@ class Teste:
 
 	def getAllObjects(self):
 		init_time = timeit.default_timer()
-		documentos = self.classeDAO.getAllObjects()
-		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'RECEBER TODOS', documentos.count())
+		documentos, size = self.classeDAO.getAllObjects()
+		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'RECEBER TODOS', size)
 
 	def getByCivilStatus(self, civil_status):
 		init_time = timeit.default_timer()
-		quantidade = self.classeDAO.getByCivilStatus(civil_status)
-		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'BUSCAR por estado civil de solteiro, e foram encontrados ', quantidade)
+		objetos, quantity = self.classeDAO.getByCivilStatus(civil_status)
+		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'BUSCAR por estado civil de solteiro, e foram encontrados ', quantity)
 
 	def updateCivilStatus(self, old_status, new_status):
 		init_time = timeit.default_timer()
-		quantidade = self.classeDAO.updateCivilStatus(old_status, new_status)
-		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'ATUALIZAR O ESTADO CIVIL DE ', quantidade)
+		objects, quantity = self.classeDAO.updateCivilStatus(old_status, new_status)
+		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'ATUALIZAR O ESTADO CIVIL DE ', quantity)
 
 	def deleteByCivilStatus(self, civil_status_to_delete):
 		init_time = timeit.default_timer()
-		quantidade = self.classeDAO.deleteByCivilStatus(civil_status_to_delete)
-		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'DELETAR', quantidade)
+		objects, quantity = self.classeDAO.deleteByCivilStatus(civil_status_to_delete)
+		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'DELETAR', quantity)
 
 	def searchObjectsByCity(self, city):
 		init_time = timeit.default_timer()
@@ -81,7 +81,8 @@ class Teste:
 
 	def getQuantityOfValuesOnDB(self):
 		init_time = timeit.default_timer()
-		self.classeDAO.getQuantityOfValuesOnDB()
+		quantity_of_values = self.classeDAO.getQuantityOfValuesOnDB()
+		print quantity_of_values
 
 	def deleteAllObjects(self):
 		self.classeDAO.deleteAllObjects()
@@ -112,12 +113,11 @@ class Teste:
 		elif sys.argv[2] == '100':
 			self.carga = 'carga/100mil.txt'
 		else:
-			self.carga = 'carga/1mil.txt'
+			self.carga = 'carga/5objetos.txt'
 
 
 
 teste = Teste()
-print teste.carga
 objetos = teste.getObjectsFromFile(teste.carga)
 teste.insertObjecbyObject(objetos)
 teste.getQuantityOfValuesOnDB()
