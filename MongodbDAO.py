@@ -2,7 +2,6 @@
 # coding=utf-8
 
 from pymongo import MongoClient
-import pprint
 
 class MongodbDAO:
 	db_name = 'MongoDB'

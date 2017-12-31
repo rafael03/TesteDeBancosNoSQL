@@ -2,10 +2,8 @@
 # coding=utf-8
 
 import redis
-import json
 import uuid
 import ast
-import datetime
 
 class RedisDAO:
 	db_name = 'Redis'

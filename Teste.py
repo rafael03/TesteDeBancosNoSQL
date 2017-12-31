@@ -48,12 +48,12 @@ class Teste:
 
 	def getAllObjects(self):
 		init_time = timeit.default_timer()
-		documentos, size = self.classeDAO.getAllObjects()
-		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'RECEBER TODOS', size)
+		documentos, quantity = self.classeDAO.getAllObjects()
+		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'RECEBER TODOS', quantity)
 
 	def getByCivilStatus(self, civil_status):
 		init_time = timeit.default_timer()
-		objetos, quantity = self.classeDAO.getByCivilStatus(civil_status)
+		objects, quantity = self.classeDAO.getByCivilStatus(civil_status)
 		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'BUSCAR por estado civil de solteiro, e foram encontrados ', quantity)
 
 	def updateCivilStatus(self, old_status, new_status):
@@ -79,10 +79,10 @@ class Teste:
 		init_time = timeit.default_timer()
 		pass
 
-	def getQuantityOfValuesOnDB(self):
+	def getQuantityOfValuesOnDB(self, texto):
 		init_time = timeit.default_timer()
 		quantity_of_values = self.classeDAO.getQuantityOfValuesOnDB()
-		print quantity_of_values
+		print texto, quantity_of_values
 
 	def deleteAllObjects(self):
 		self.classeDAO.deleteAllObjects()
@@ -90,7 +90,7 @@ class Teste:
 	def __init__(self):
 		if sys.argv[1] == 'cassandra' or sys.argv[1] == '-c':
 			self.banco = 'Cassandra'
-			self.classeDAO = CassandraAO()
+			self.classeDAO = CassandraDAO()
 		elif sys.argv[1] == 'mongodb' or sys.argv[1] == '-m':
 			self.classeDAO = MongodbDAO()
 			self.banco = 'MongoDB'
@@ -115,14 +115,14 @@ class Teste:
 		else:
 			self.carga = 'carga/5objetos.txt'
 
-
-
 teste = Teste()
 objetos = teste.getObjectsFromFile(teste.carga)
 teste.insertObjecbyObject(objetos)
-teste.getQuantityOfValuesOnDB()
+teste.getQuantityOfValuesOnDB('Total de documentos armazenados no banco')
 teste.getAllObjects()
 teste.getByCivilStatus('Solteiro')
 teste.updateCivilStatus('Solteiro', 'Alterado')
 teste.deleteByCivilStatus('Alterado')
+teste.getQuantityOfValuesOnDB('Total de documentos restantes no banco')
 teste.deleteAllObjects()
+teste.getQuantityOfValuesOnDB('Total de documentos após limpeza no banco')
