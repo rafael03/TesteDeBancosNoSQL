@@ -9,10 +9,13 @@ from cassandra.cqlengine.management import sync_table
 
 import uuid
 class CassandraDAO:
-	db_name = 'Cassandra'
-	cassandra = CassandraModel()
-	setup(["127.0.0.1"], "test_keyspace")
-	inscritos = NamedTable("test_keyspace", "inscritos")
+	try:
+		db_name = 'Cassandra'
+		cassandra = CassandraModel()
+		setup(["127.0.0.1"], "test_keyspace")
+		inscritos = NamedTable("test_keyspace", "inscritos")
+	except Exception as e:
+		pass
 
 	def insertObject(self, objeto):
 		id_ = uuid.uuid4().hex
