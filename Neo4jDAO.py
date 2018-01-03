@@ -41,19 +41,24 @@ class Neo4jDAO:
 		return {}, len(all_objetos)
 
 	def getAllObjects(self):
-		pass
+		statement = "MATCH (n:Inscritos) RETURN n"
+		tx = self.graph.begin()
+		result = tx.run(statement)
+		values = list(result)
+		tx.finish
+		return values, len(values)
 
 	def getQuantityOfValuesOnDB(self):
-		pass
+		values, quantity = self.getAllObjects()
+		return quantity
 
 	def getByCivilStatus(self, civil_status):
-		# MATCH (p:Person { name:"Keanu Reeves" })
-		# RETURN p
-
-		# MATCH (m:Movie)
-		# WHERE m.title = "The Matrix"
-		# RETURN m
-		pass
+		statement = "MATCH (n:Inscritos) WHERE n.ESTADO_CIVIL = {estado_civil} RETURN n"
+		tx = self.graph.begin()
+		result = tx.run(statement, {"estado_civil": civil_status})
+		values = list(result)
+		tx.finish
+		return values, len(values)
 
 	def updateCivilStatus(self, old_status, new_status):
 		pass
