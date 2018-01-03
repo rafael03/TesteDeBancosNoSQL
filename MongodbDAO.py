@@ -10,11 +10,15 @@ class MongodbDAO:
 	db = cliente['database']
 	recrutas_collections = db['recrutas']
 
-	def insertObject(self, objetos):
-		id_ = self.recrutas_collections.insert_one(objetos).inserted_id
+	def insertObject(self, objeto):
+		id_ = self.recrutas_collections.insert_one(objeto).inserted_id
 
-	def insertGroupOfObjects(self):
-		pass
+	def insertGroupOfObjects(self, objetos):
+		objetos_parts = [objetos[i:i+100] for i in range(0, len(objetos), 100)]
+		x = {}
+		for objects in objetos_parts:
+			result = self.recrutas_collections.insert_many(objects, ordered=False)
+
 
 	def getAllObjects(self):
 		collections = self.recrutas_collections.find()
