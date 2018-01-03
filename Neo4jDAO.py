@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-from neo4j.v1 import GraphDatabase
+# from neo4j.v1 import GraphDatabase
 import uuid
 from py2neo import Graph, Node, Relationship
 
@@ -10,15 +10,15 @@ from py2neo import Graph, Node, Relationship
 
 class Neo4jDAO:
 	db_name = 'Neo4j'
-	# uri = "bolt://localhost:7687"
-	# #O segundo parâmetro, referente a senha deve ser configurado quando realizado o primeiro login no Neo4j
-	# driver = GraphDatabase.driver(uri, auth=("neo4j", "brasil"), MaxConnectionPoolSize=1000)
-	contador = 1
-	graph = Graph("http://neo4j:brasil@localhost:7474/db/data")
+	try:
+		graph = Graph("http://neo4j:brasil@localhost:7474/db/data")
+	except Exception as e:
+		pass
 
 	def insertObject(self, objetos):
 		id_ = uuid.uuid4().hex
 		uri = "bolt://localhost:7687"
+
 		#O segundo parâmetro, referente a senha deve ser configurado quando realizado o primeiro login no Neo4j
 		driver = GraphDatabase.driver(uri, auth=("neo4j", "brasil"), MaxConnectionPoolSize=1000)
 		statement = "CREATE (a:Inscritos {ID:{id}, ANO_NASCIMENTO:{ano_nascimento}, PESO:{peso}, ALTURA:{altura}, CABECA:{cabeca}, CALCADO:{calcado}, CINTURA:{cintura}, RELIGIAO:{religiao}, MUN_NASCIMENTO:{mun_nascimento}, UF_NASCIMENTO:{uf_nascimento}, PAIS_NASCIMENTO:{pais_nascimento}, ESTADO_CIVIL:{estado_civil}, SEXO:{sexo}, ESCOLARIDADE:{escolaridade}, VINCULACAO_ANO:{vinculacao_ano}, DISPENSA:{dispensa}, ZONA_RESIDENCIAL:{zona_residencial}, MUN_RESIDENCIA:{mun_residencia}, UF_RESIDENCIA:{uf_residencia}, PAIS_RESIDENCIA:{pais_residencia}, JSM:{jsm}, MUN_JSM:{mun_jsm}, UF_JSM:{uf_jsm}})"
@@ -26,7 +26,6 @@ class Neo4jDAO:
 		driver.close()
 		self.contador+=1
 		return {}, 0
-	
 
 	def inserGroupOfObjects(self, all_objetos):
 		statement = "CREATE (a:Inscritos {ID:{id}, ANO_NASCIMENTO:{ano_nascimento}, PESO:{peso}, ALTURA:{altura}, CABECA:{cabeca}, CALCADO:{calcado}, CINTURA:{cintura}, RELIGIAO:{religiao}, MUN_NASCIMENTO:{mun_nascimento}, UF_NASCIMENTO:{uf_nascimento}, PAIS_NASCIMENTO:{pais_nascimento}, ESTADO_CIVIL:{estado_civil}, SEXO:{sexo}, ESCOLARIDADE:{escolaridade}, VINCULACAO_ANO:{vinculacao_ano}, DISPENSA:{dispensa}, ZONA_RESIDENCIAL:{zona_residencial}, MUN_RESIDENCIA:{mun_residencia}, UF_RESIDENCIA:{uf_residencia}, PAIS_RESIDENCIA:{pais_residencia}, JSM:{jsm}, MUN_JSM:{mun_jsm}, UF_JSM:{uf_jsm}})"
@@ -61,10 +60,22 @@ class Neo4jDAO:
 		return values, len(values)
 
 	def updateCivilStatus(self, old_status, new_status):
-		pass
+		statement = "MATCH (n {ESTADO_CIVIL:{old_status}}) SET n.ESTADO_CIVIL = {new_status} return n"
+		tx = self.graph.begin()
+		result = tx.run(statement, {"old_status": old_status, "new_status": new_status})
+		values = list(result)
+		tx.commit()
+		tx.finish
+		return values, len(values)
 
 	def deleteByCivilStatus(self, civil_status_to_delete):
-		pass
+		statement = "MATCH (n {ESTADO_CIVIL:{civil_status_to_delete}}) DETACH DELETE n"
+		tx = self.graph.begin()
+		result = tx.run(statement, {"civil_status_to_delete": civil_status_to_delete})
+		values = list(result)
+		tx.commit()
+		tx.finish
+		return values, len(values)
 
 	def deleteAllObjects(self):
-		pass
+		self.graph.delete_all()
