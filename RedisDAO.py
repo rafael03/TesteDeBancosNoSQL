@@ -14,8 +14,15 @@ class RedisDAO:
 		objeto['id_'] = id_
 		self.redis_db.set(str(id_), objeto)
 
-	def insertGroupOfObjects(self):
-		pass
+	def insertGroupOfObjects(self, objetos):
+		values = []
+		objetos_parts = [objetos[i:i+100] for i in range(0, len(objetos), 100)]
+		for obj in objetos_parts:
+			pipe = self.redis_db.pipeline()
+			for objeto in obj:
+				id_ = uuid.uuid4().hex
+				pipe.set(str(id_), objeto)
+			values = pipe.execute()
 
 	def getAllObjects(self):
 		keys = self.redis_db.keys()
