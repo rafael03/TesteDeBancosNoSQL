@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-# from neo4j.v1 import GraphDatabase
+from neo4j.v1 import GraphDatabase
 import uuid
 from py2neo import Graph, Node, Relationship
 
@@ -24,7 +24,6 @@ class Neo4jDAO:
 		statement = "CREATE (a:Inscritos {ID:{id}, ANO_NASCIMENTO:{ano_nascimento}, PESO:{peso}, ALTURA:{altura}, CABECA:{cabeca}, CALCADO:{calcado}, CINTURA:{cintura}, RELIGIAO:{religiao}, MUN_NASCIMENTO:{mun_nascimento}, UF_NASCIMENTO:{uf_nascimento}, PAIS_NASCIMENTO:{pais_nascimento}, ESTADO_CIVIL:{estado_civil}, SEXO:{sexo}, ESCOLARIDADE:{escolaridade}, VINCULACAO_ANO:{vinculacao_ano}, DISPENSA:{dispensa}, ZONA_RESIDENCIAL:{zona_residencial}, MUN_RESIDENCIA:{mun_residencia}, UF_RESIDENCIA:{uf_residencia}, PAIS_RESIDENCIA:{pais_residencia}, JSM:{jsm}, MUN_JSM:{mun_jsm}, UF_JSM:{uf_jsm}})"
 		driver.session().run(statement, {"id": id_, "ano_nascimento": objetos["ANO_NASCIMENTO"], "peso": objetos["PESO"], "altura": objetos["ALTURA"], "cabeca": objetos["CABECA"], "calcado": objetos["CALCADO"], "cintura": objetos["CINTURA"], "religiao": objetos["RELIGIAO"], "mun_nascimento": objetos["MUN_NASCIMENTO"], "uf_nascimento": objetos["UF_NASCIMENTO"], "pais_nascimento": objetos["PAIS_NASCIMENTO"], "estado_civil": objetos["ESTADO_CIVIL"], "sexo": objetos["SEXO"], "escolaridade": objetos["ESCOLARIDADE"], "vinculacao_ano": objetos["VINCULACAO_ANO"], "dispensa": objetos["DISPENSA"], "zona_residencial": objetos["ZONA_RESIDENCIAL"], "mun_residencia": objetos["MUN_RESIDENCIA"], "uf_residencia": objetos["UF_RESIDENCIA"], "pais_residencia": objetos["PAIS_RESIDENCIA"], "jsm": objetos["JSM"], "mun_jsm": objetos["MUN_JSM"], "uf_jsm": objetos["UF_JSM"]})
 		driver.close()
-		self.contador+=1
 		return {}, 0
 
 	def inserGroupOfObjects(self, all_objetos):
