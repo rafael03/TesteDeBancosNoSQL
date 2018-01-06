@@ -26,7 +26,8 @@ class Teste:
 	'''
 
 	def _mensagem(self, banco, tempo, operacao, quantidade):
-		print "O %s demorou %f segundos para %s %d documentos " % (banco, tempo, operacao, quantidade)
+		str_time = str(round(tempo,7)).replace(".",",")
+		print "%s %s %d" % (operacao.ljust(22), str_time.ljust(15), quantidade)
 
 	def _getTimeDifference(self, init_time):
 		final_time = timeit.default_timer()
@@ -43,30 +44,30 @@ class Teste:
 			self.classeDAO.insertObject(objeto)
 		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'INSERIR', len(objetos))
 
-	def inserGroupOfObjects(self, objetos):
+	def insertGroupOfObjects(self, objetos):
 		init_time = timeit.default_timer()
-		self.classeDAO.inserGroupOfObjects(objetos)
-		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'INSERIR', len(objetos))
+		self.classeDAO.insertGroupOfObjects(objetos)
+		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'INSERIR POR BATCH', len(objetos))
 
 	def getAllObjects(self):
 		init_time = timeit.default_timer()
 		documentos, quantity = self.classeDAO.getAllObjects()
-		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'RECEBER TODOS', quantity)
+		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'RECEBER TUDO', quantity)
 
 	def getByCivilStatus(self, civil_status):
 		init_time = timeit.default_timer()
 		objects, quantity = self.classeDAO.getByCivilStatus(civil_status)
-		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'BUSCAR por estado civil de solteiro, e foram encontrados ', quantity)
+		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'BUSCA SELETIVA', quantity)
 
 	def updateCivilStatus(self, old_status, new_status):
 		init_time = timeit.default_timer()
 		objects, quantity = self.classeDAO.updateCivilStatus(old_status, new_status)
-		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'ATUALIZAR O ESTADO CIVIL DE ', quantity)
+		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'ATUALIZAR SELETIVA', quantity)
 
 	def deleteByCivilStatus(self, civil_status_to_delete):
 		init_time = timeit.default_timer()
 		objects, quantity = self.classeDAO.deleteByCivilStatus(civil_status_to_delete)
-		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'DELETAR', quantity)
+		self._mensagem(self.classeDAO.db_name, self._getTimeDifference(init_time), 'REMOÇÃO SELETIVA', quantity)
 
 	def searchObjectsByCity(self, city):
 		init_time = timeit.default_timer()
@@ -81,10 +82,10 @@ class Teste:
 		init_time = timeit.default_timer()
 		pass
 
-	def getQuantityOfValuesOnDB(self, texto):
+	def getQuantityOfValuesOnDB(self):
 		init_time = timeit.default_timer()
 		quantity_of_values = self.classeDAO.getQuantityOfValuesOnDB()
-		print texto, quantity_of_values
+		return quantity_of_values
 
 	def deleteAllObjects(self):
 		self.classeDAO.deleteAllObjects()
@@ -122,14 +123,22 @@ class Teste:
 			self.carga = 'carga/5objetos.txt'
 
 teste = Teste()
+init_time = timeit.default_timer()
 objetos = teste.getObjectsFromFile(teste.carga)
-# teste.insertObjecbyObject(objetos)
-teste.inserGroupOfObjects(objetos)
-teste.getQuantityOfValuesOnDB('Total de documentos armazenados no banco')
+final_time = timeit.default_timer()
+diff_time = final_time - init_time
+print "Tempo para carregar toda carga em memória: ", diff_time
+
+print "%s %s %s" % ("OPERAÇÃO".ljust(22), "SEGUNDOS".ljust(15), "QUANTIDADE DE DOC")
+teste.insertObjecbyObject(objetos)
+teste.insertGroupOfObjects(objetos)
+objetos_inseridos = teste.getQuantityOfValuesOnDB()
 teste.getAllObjects()
 teste.getByCivilStatus('Solteiro')
-# teste.updateCivilStatus('Solteiro', 'Alterado')
-# teste.deleteByCivilStatus('Alterado')
-teste.getQuantityOfValuesOnDB('Total de documentos restantes no banco')
-# teste.deleteAllObjects()
-# teste.getQuantityOfValuesOnDB('Total de documentos após limpeza no banco')
+teste.updateCivilStatus('Solteiro', 'Alterado')
+teste.deleteByCivilStatus('Alterado')
+teste.deleteAllObjects()
+objetos_no_banco = teste.getQuantityOfValuesOnDB()
+
+print "Foram inseridos um total de %d documentos" % (objetos_inseridos)
+print "Quantidade de documentos existente no banco", objetos_no_banco
